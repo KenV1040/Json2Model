@@ -17,7 +17,7 @@ def main(argv):
 
     args = parser.parse_args()
     res = getJsonFromAPI(args.url)
-    parseToModel(res, urlparse(res.u), args.fn)
+    parseToModel(res, urlparse(args.url), args.fn)
 
 
 def getJsonFromAPI(apiUrl):
@@ -33,7 +33,7 @@ def parseToModel(resDic, urlParsed, fileName={}):
     print(f"Keys {listOfKeys}")
     if fileName is f.__defaults__[0]:
         print("No file name passed")
-        filename = urlParsed.netloc.replace('.','_') + '_model.dart'
+        fileName = urlParsed.netloc.replace('.','_') + '_model.dart'
         
 
 
