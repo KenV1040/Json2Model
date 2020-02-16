@@ -1,4 +1,6 @@
 import sys, requests
+from urllib.parse import urlparse
+import argparse
 
 def help():
     print("Usage")
@@ -8,32 +10,32 @@ def help():
 
 def main(argv):
     # Parse command line arguments
-    apiUrl = ""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u', '--url', help="Input api url", required=True, dest="url")
+    #parser.add_argument('-h', '--help', help="Help", required=False)
+    parser.add_argument('-fn', '--fileName', help="Prefered output file name", required=False, dest="fn")
 
-    if len(sys.argv) < 2:
-        help()
-        sys.exit(1)
-    
-    if sys.argv[1] == "--help" or sys.argv[1] == '-h':
-        help()
-        sys.exit(0)
-    elif sys.argv[1] == "--url" or sys.argv[1] == "-u":
-        if len(sys.argv) != 3:
-            print("Missing url value")
-        else: 
-            apiUrl = sys.argv[2]
-            print(f"APIUrl: {sys.argv[2]}")
-            getJsonFromAPI(apiUrl)
-    else:
-        help()
-        sys.exit(0)
+    args = parser.parse_args()
+    res = getJsonFromAPI(args.url)
+    parseToModel(res, urlparse(res.u), args.fn)
 
 
 def getJsonFromAPI(apiUrl):
     response = requests.get(apiUrl)
+    print("API Call successful")
     if response.headers['Content-type'] != 'application/json':
         print("Not json")
         sys.exit(0)
+    return response.json()
+    
+def parseToModel(resDic, urlParsed, fileName={}):
+    listOfKeys = list(resDic.keys())
+    print(f"Keys {listOfKeys}")
+    if fileName is f.__defaults__[0]:
+        print("No file name passed")
+        filename = urlParsed.netloc.replace('.','_') + '_model.dart'
+        
+
 
 if __name__ == "__main__":
     main(sys.argv)
