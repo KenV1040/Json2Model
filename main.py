@@ -17,7 +17,10 @@ def main(argv):
 
     args = parser.parse_args()
     res = getJsonFromAPI(args.url)
-    parseToModel(res, urlparse(args.url), args.fn)
+    if (args.fn is None):
+        parseToModel(res, urlparse(args.url))
+    else:
+        parseToModel(res, urlparse(args.url), args.fn)
 
 
 def getJsonFromAPI(apiUrl):
@@ -31,10 +34,20 @@ def getJsonFromAPI(apiUrl):
 def parseToModel(resDic, urlParsed, fileName={}):
     listOfKeys = list(resDic.keys())
     print(f"Keys {listOfKeys}")
-    if fileName is f.__defaults__[0]:
-        print("No file name passed")
-        fileName = urlParsed.netloc.replace('.','_') + '_model.dart'
-        
+    localFileName = ""
+    if fileName is parseToModel.__defaults__[0]:
+        localFileName = urlParsed.netloc.replace('.','_') + '_model.dart'
+    else:
+        localFileName = fileName
+    
+    thisFile = open(localFileName, "w")
+    className = urlParsed.netloc.replace('.','')
+    thisFile.write("class " + className + " {\n")
+    for key in listOfKeys:
+        thisFile.write("\tString {};\n".format(key))
+    thisFile.write("}")
+    thisFile.close()
+    print("Successfuly created model file")
 
 
 if __name__ == "__main__":
