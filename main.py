@@ -1,5 +1,4 @@
-import sys
-
+import sys, requests
 
 def help():
     print("Usage")
@@ -8,6 +7,7 @@ def help():
 
 
 def main(argv):
+    # Parse command line arguments
     apiUrl = ""
 
     if len(sys.argv) < 2:
@@ -23,8 +23,16 @@ def main(argv):
         else: 
             apiUrl = sys.argv[2]
             print(f"APIUrl: {sys.argv[2]}")
+            getJsonFromAPI(apiUrl)
     else:
         help()
+        sys.exit(0)
+
+
+def getJsonFromAPI(apiUrl):
+    response = requests.get(apiUrl)
+    if response.headers['Content-type'] != 'application/json':
+        print("Not json")
         sys.exit(0)
 
 if __name__ == "__main__":
