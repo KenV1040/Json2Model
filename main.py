@@ -49,11 +49,15 @@ def parseToModel(resDic, urlParsed, fileName={}):
     variableName = []
     # Change all keys to lowerCamelCase
     for i in range(0, len(listOfKeys)):
-        if "_" not in listOfKeys[i]:
+        if "_" not in listOfKeys[i] or "-" not in listOfKeys[i]:
             variableName.append(listOfKeys[i])
             continue
-        components = listOfKeys[i].split('_')
-        variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
+        if "_" in listOfKeys[i]:
+            components = listOfKeys[i].split('_')
+            variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
+        elif "-" in listOfKeys[i]:
+            components = listOfKeys[i].split('_')
+            variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
 
     className = urlParsed.netloc.replace('.',' ').replace('www.','')
     className = className.title().replace(' ','')
