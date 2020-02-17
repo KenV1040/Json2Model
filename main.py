@@ -40,11 +40,25 @@ def parseToModel(resDic, urlParsed, fileName={}):
     else:
         localFileName = fileName
     
+    for key in listOfKeys:
+        print(type(resDic[key]))
+        if type(resDic[key]) == list:
+            print(f"{key} Is list")
+        elif type(resDic[key]) == str:
+            print(f"{key} Is list")
+
     thisFile = open(localFileName, "w")
     className = urlParsed.netloc.replace('.','')
     thisFile.write("class " + className + " {\n")
     for key in listOfKeys:
-        thisFile.write("\tString {};\n".format(key))
+        if type(resDic[key]) == list:
+            thisFile.write(f"\tList<dynamic> {key} = [];\n")
+        elif type(resDic[key]) == str:
+            thisFile.write(f"\tString {key};\n")
+    thisFile.write(f"\t{className}.fromJson({{Map<String, dynamic> data}}){{\n")  
+    for key in listOfKeys:
+        thisFile.write(f"\t\tthis.{key} = data['{key}'];\n")      
+    thisFile.write("\t}\n")
     thisFile.write("}")
     thisFile.close()
     print("Successfuly created model file")
