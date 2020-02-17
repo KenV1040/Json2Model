@@ -4,7 +4,7 @@ Json2Model (J2M) is a simple json parser which accepts either a url or a path to
 # Core features
 * [X] Command line script
 * [X] Accept url in
-* [ ] Dart file out (In progress. Need to deal with types)
+* [X] Dart file out 
 
 # Future plans
 * [ ] Accept .json files locally
