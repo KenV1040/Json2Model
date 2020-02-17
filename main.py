@@ -59,7 +59,7 @@ def parseToModel(resDic, urlParsed, fileName={}):
             components = listOfKeys[i].split('-')
             variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
     print(variableName)
-    """ className = urlParsed.netloc.replace('.',' ').replace('www.','')
+    className = urlParsed.netloc.replace('.',' ').replace('www.','')
     className = className.title().replace(' ','')
 
     # Start writing dart file
@@ -89,7 +89,7 @@ def parseToModel(resDic, urlParsed, fileName={}):
 
     thisFile.write("}")
     thisFile.close()
-    print("Successfuly created model file") """
+    print("Successfuly created model file")
 
 
 if __name__ == "__main__":
