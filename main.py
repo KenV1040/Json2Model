@@ -50,7 +50,7 @@ def parseToModel(resDic, urlParsed, fileName={}):
     # Change all keys to lowerCamelCase
     for i in range(0, len(listOfKeys)):
         if "_" not in listOfKeys[i] and "-" not in listOfKeys[i]:
-            variableName.append(listOfKeys[i])
+            variableName.append(listOfKeys[i].lower())
             continue
         if "_" in listOfKeys[i]:
             components = listOfKeys[i].split('_')
@@ -85,7 +85,10 @@ def parseToModel(resDic, urlParsed, fileName={}):
     thisFile.write(f"\t{className}.fromJson({{Map<String, dynamic> data}}) {{\n")  
     index = 0
     for key in listOfKeys:
-        thisFile.write(f"\t\tthis.{variableName[index]} = data['{key}'];\n")
+        if type(resDic[key]) == str:
+            thisFile.write(f"\t\tthis.{variableName[index]} = data['{key}'] ?? \"\";\n")
+        else: 
+            thisFile.write(f"\t\tthis.{variableName[index]} = data['{key}'];\n")
         index += 1    
     thisFile.write("\t}\n")
 
