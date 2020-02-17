@@ -47,19 +47,33 @@ def parseToModel(resDic, urlParsed, fileName={}):
         elif type(resDic[key]) == str:
             print(f"{key} Is list")
 
-    thisFile = open(localFileName, "w")
-    className = urlParsed.netloc.replace('.',' ')
+    for i in range(0, len(listOfKeys) - 1):
+        if "_" not in listOfKeys[i]:
+            continue
+        components = listOfKeys[i].split('_')
+        listOfKeys[i] = components[0].lower() + ''.join(x.title() for x in components[1:])
+
+    className = urlParsed.netloc.replace('.',' ').replace('www.','')
     className = className.title().replace(' ','')
+
+    # Start writing dart file
+    thisFile = open(localFileName, "r+")
+    thisFile.truncate(0)
     thisFile.write("class " + className + " {\n")
+    # Allocating variables to key names
     for key in listOfKeys:
         if type(resDic[key]) == list:
             thisFile.write(f"\tList<dynamic> {key} = [];\n")
         elif type(resDic[key]) == str:
             thisFile.write(f"\tString {key};\n")
+        
+    thisFile.write('\n')
+    # Creating a fromJson constructor method
     thisFile.write(f"\t{className}.fromJson({{Map<String, dynamic> data}}) {{\n")  
     for key in listOfKeys:
         thisFile.write(f"\t\tthis.{key} = data['{key}'];\n")      
     thisFile.write("\t}\n")
+
     thisFile.write("}")
     thisFile.close()
     print("Successfuly created model file")
