@@ -1,6 +1,6 @@
 class CveCirclLu {
-	String Modified;
-	String Published;
+	String modified;
+	String published;
 	Map<String, dynamic> access = {};
 	String assigner;
 	double cvss;
@@ -15,17 +15,17 @@ class CveCirclLu {
 	List<dynamic> vulnerableProduct = [];
 
 	CveCirclLu.fromJson({Map<String, dynamic> data}) {
-		this.Modified = data['Modified'] ?? ;
-		this.Published = data['Published'] ?? ;
+		this.modified = data['Modified'] ?? "";
+		this.published = data['Published'] ?? "";
 		this.access = data['access'];
-		this.assigner = data['assigner'] ?? ;
+		this.assigner = data['assigner'] ?? "";
 		this.cvss = data['cvss'];
-		this.cwe = data['cwe'] ?? ;
-		this.id = data['id'] ?? ;
+		this.cwe = data['cwe'] ?? "";
+		this.id = data['id'] ?? "";
 		this.impact = data['impact'];
-		this.lastModified = data['last-modified'] ?? ;
+		this.lastModified = data['last-modified'] ?? "";
 		this.references = data['references'];
-		this.summary = data['summary'] ?? ;
+		this.summary = data['summary'] ?? "";
 		this.vulnerableConfiguration = data['vulnerable_configuration'];
 		this.vulnerableConfigurationCpe22 = data['vulnerable_configuration_cpe_2_2'];
 		this.vulnerableProduct = data['vulnerable_product'];
