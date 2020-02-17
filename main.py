@@ -49,21 +49,21 @@ def parseToModel(resDic, urlParsed, fileName={}):
     variableName = []
     # Change all keys to lowerCamelCase
     for i in range(0, len(listOfKeys)):
-        if "_" not in listOfKeys[i] or "-" not in listOfKeys[i]:
+        if "_" not in listOfKeys[i] and "-" not in listOfKeys[i]:
             variableName.append(listOfKeys[i])
             continue
         if "_" in listOfKeys[i]:
             components = listOfKeys[i].split('_')
             variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
         elif "-" in listOfKeys[i]:
-            components = listOfKeys[i].split('_')
+            components = listOfKeys[i].split('-')
             variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
-
-    className = urlParsed.netloc.replace('.',' ').replace('www.','')
+    print(variableName)
+    """ className = urlParsed.netloc.replace('.',' ').replace('www.','')
     className = className.title().replace(' ','')
 
     # Start writing dart file
-    thisFile = open(localFileName, "r+")
+    thisFile = open(localFileName, "w")
     thisFile.truncate(0)
     thisFile.write("class " + className + " {\n")
     # Allocating variables to key names
@@ -89,7 +89,7 @@ def parseToModel(resDic, urlParsed, fileName={}):
 
     thisFile.write("}")
     thisFile.close()
-    print("Successfuly created model file")
+    print("Successfuly created model file") """
 
 
 if __name__ == "__main__":

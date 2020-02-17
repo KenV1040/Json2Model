@@ -10,9 +10,9 @@ class CveCirclLu {
 	String last-modified;
 	List<dynamic> references = [];
 	String summary;
-	List<dynamic> vulnerableConfiguration = [];
-	List<dynamic> vulnerableConfigurationCpe22 = [];
-	List<dynamic> vulnerableProduct = [];
+	List<dynamic> vulnerable_configuration = [];
+	List<dynamic> vulnerable_configuration_cpe_2_2 = [];
+	List<dynamic> vulnerable_product = [];
 
 	CveCirclLu.fromJson({Map<String, dynamic> data}) {
 		this.Modified = data['Modified'];
