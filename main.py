@@ -83,8 +83,10 @@ def parseToModel(resDic, urlParsed, fileName={}):
     thisFile.write('\n')
     # Creating a fromJson constructor method
     thisFile.write(f"\t{className}.fromJson({{Map<String, dynamic> data}}) {{\n")  
+    index = 0
     for key in listOfKeys:
-        thisFile.write(f"\t\tthis.{key} = data['{key}'];\n")      
+        thisFile.write(f"\t\tthis.{variableName[index]} = data['{key}'];\n")
+        index += 1    
     thisFile.write("\t}\n")
 
     thisFile.write("}")
