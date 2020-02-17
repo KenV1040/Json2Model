@@ -24,6 +24,7 @@ def main(argv):
 
 
 def getJsonFromAPI(apiUrl):
+    print("Getting api...")
     response = requests.get(apiUrl)
     print("API Call successful")
     if response.headers['Content-type'] != 'application/json':
@@ -32,26 +33,27 @@ def getJsonFromAPI(apiUrl):
     return response.json()
     
 def parseToModel(resDic, urlParsed, fileName={}):
-    listOfKeys = list(resDic.keys())
+    if type(resDic) == list:
+        print("No keys, it's all a list")
+        listOfKeys = list(resDic[0].keys())
+        resDic = resDic[0]
+    else: 
+        listOfKeys = list(resDic.keys())
     print(f"Keys {listOfKeys}")
     localFileName = ""
     if fileName is parseToModel.__defaults__[0]:
         localFileName = urlParsed.netloc.replace('.','_') + '_model.dart'
     else:
         localFileName = fileName
-    
-    for key in listOfKeys:
-        print(type(resDic[key]))
-        if type(resDic[key]) == list:
-            print(f"{key} Is list")
-        elif type(resDic[key]) == str:
-            print(f"{key} Is list")
 
-    for i in range(0, len(listOfKeys) - 1):
+    variableName = []
+    # Change all keys to lowerCamelCase
+    for i in range(0, len(listOfKeys)):
         if "_" not in listOfKeys[i]:
+            variableName.append(listOfKeys[i])
             continue
         components = listOfKeys[i].split('_')
-        listOfKeys[i] = components[0].lower() + ''.join(x.title() for x in components[1:])
+        variableName.append(components[0].lower() + ''.join(x.title() for x in components[1:]))
 
     className = urlParsed.netloc.replace('.',' ').replace('www.','')
     className = className.title().replace(' ','')
@@ -61,11 +63,18 @@ def parseToModel(resDic, urlParsed, fileName={}):
     thisFile.truncate(0)
     thisFile.write("class " + className + " {\n")
     # Allocating variables to key names
+    index = 0
     for key in listOfKeys:
+        print(type(resDic[key]))
         if type(resDic[key]) == list:
-            thisFile.write(f"\tList<dynamic> {key} = [];\n")
+            thisFile.write(f"\tList<dynamic> {variableName[index]} = [];\n")
         elif type(resDic[key]) == str:
-            thisFile.write(f"\tString {key};\n")
+            thisFile.write(f"\tString {variableName[index]};\n")
+        elif type(resDic[key]) == dict:
+            thisFile.write(f'\tMap<String, dynamic> {variableName[index]} = {{}};\n')
+        elif type(resDic[key]) == float:
+            thisFile.write(f'\tdouble {variableName[index]};\n')
+        index += 1
         
     thisFile.write('\n')
     # Creating a fromJson constructor method
